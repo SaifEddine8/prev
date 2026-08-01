@@ -6,9 +6,9 @@ import 'package:project_review/provider/fav_provider.dart';
 import 'package:provider/provider.dart';
 
 class CardProduct extends StatelessWidget {
-  int index=-1;
+  int index = -1;
   ProductModel product;
-   CardProduct({super.key,required this.index,required this.product});
+  CardProduct({super.key, required this.index, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class CardProduct extends StatelessWidget {
         children: [
           Stack(
             children: [
-              Image.network(product.image,height: 130,),
+              Image.network(product.image, height: 130),
               Positioned(
                 top: 10,
                 right: 10,
@@ -25,16 +25,25 @@ class CardProduct extends StatelessWidget {
                   backgroundColor: Colors.grey[500],
                   radius: 15,
                   child: InkWell(
-                    onTap:  ()=>
-                      context.read<FavProvider>().toggleFav(product)
-                    ,
-                    child: Icon(product.isFav?Icons.favorite:Icons.favorite_border_outlined,size: 18,color: Colors.white,))),
+                    onTap: () {
+                      print('object');
+                      context.read<FavProvider>().toggleFav(product);
+                    },
+                    child: Icon(
+                      context.watch<FavProvider>().products.contains(product)
+                          ? Icons.favorite
+                          : Icons.favorite_border_outlined,
+                      size: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ),
               Positioned(
                 bottom: 8,
                 right: 8,
                 child: CircleAvatar(
-                  backgroundColor: Theme.of(context).primaryColor, 
+                  backgroundColor: Theme.of(context).primaryColor,
                   radius: 15,
                   child: InkWell(
                     onTap: () {
@@ -47,26 +56,19 @@ class CardProduct extends StatelessWidget {
                         ),
                       );
                     },
-                    child: const Icon(
-                      Icons.add,
-                      size: 20,
-                      color: Colors.white,
-                    ),
+                    child: const Icon(Icons.add, size: 20, color: Colors.white),
                   ),
                 ),
-              )
-
+              ),
             ],
-
           ),
           Column(
             children: [
-              Text(product.name,style: StyleClass.productName,),
-              Text(product.marca,style: StyleClass.productMarca,),
-              Text('\$${product.price}',style: StyleClass.productPrice,)
+              Text(product.name, style: StyleClass.productName),
+              Text(product.marca, style: StyleClass.productMarca),
+              Text('\$${product.price}', style: StyleClass.productPrice),
             ],
-          )
-
+          ),
         ],
       ),
     );

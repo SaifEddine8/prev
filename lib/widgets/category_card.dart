@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_review/Constant/colors_class.dart';
 import 'package:project_review/Constant/style_class.dart';
+import 'package:project_review/db/product_db.dart';
 import 'package:project_review/models/product_model.dart';
 import 'package:project_review/provider/fav_provider.dart';
 import 'package:provider/provider.dart';
@@ -8,74 +9,72 @@ import 'package:provider/provider.dart';
 class CategoryCard extends StatelessWidget {
   int index;
   Categories category;
-   CategoryCard({super.key,required this.index,required this.category});
+  CategoryCard({super.key, required this.index, required this.category});
 
   @override
   Widget build(BuildContext context) {
-    
-    double height=MediaQuery.of(context).size.height;
-    double width=MediaQuery.of(context).size.width;
-    final products = context.watch<FavProvider>().products;
-    final hasMatchingProduct = products.any((product) => product.category == category);
-    final String imageUrl = hasMatchingProduct
-        ? products.firstWhere((product) => product.category == category).image
-        : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff';
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    // final products = context.watch<FavProvider>().products;
+    // final hasMatchingProduct = products.any(
+    //   (product) => product.category == category,
+    // );
+    // final String imageUrl = hasMatchingProduct
+    //     ? products.firstWhere((product) => product.category == category).image
+    //     : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff';
     return LayoutBuilder(
-      builder: (context, constraints) => 
-       Container(
+      builder: (context, constraints) => Container(
         // width:width ,
-        height: height/4,
+        height: height / 4,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: ColorsClass.secondaryColor
+          color: ColorsClass.secondaryColor,
         ),
-        child: 
-        (index+1)%2!=0?
-        Row(
-          mainAxisAlignment: .spaceBetween,
-          children: [
-            SizedBox(width: constraints.maxWidth/50,),
-            Text(
-              category.name,
-              style: StyleClass.productName,
-            ),
-            SizedBox(
-              height: constraints.maxHeight,
-              width: constraints.maxWidth/2,
-              child: ClipRRect(
-                borderRadius: BorderRadiusGeometry.circular(20),
-                child: Image.network(imageUrl,
-                // width: MediaQuery.of(context).size.width/2.5,
-                fit: BoxFit.cover,
-                )
-                ),
-            )
-          ],
-        )
-        :
-        Row(
-          mainAxisAlignment: .spaceBetween,
-          children: [
-            
-            SizedBox(
-              height: constraints.maxHeight,
-              width: constraints.maxWidth/2,
-              child: ClipRRect(
-                
-                borderRadius: BorderRadiusGeometry.circular(20),
-                child: Image.network(context.watch<FavProvider>().products.firstWhere((product)=>product.category==category).image,
-                // width: MediaQuery.of(context).size.width/2.5,
-                fit: BoxFit.cover,
-                )),
-            ),
-            Text(
-              category.name,
-              style: StyleClass.productName,
-            ),
-            SizedBox(width: constraints.maxWidth/50,),
-          ],
-        )
-      
+        child: (index + 1) % 2 != 0
+            ? Row(
+                mainAxisAlignment: .spaceBetween,
+                children: [
+                  SizedBox(width: constraints.maxWidth / 50),
+                  Text(category.name, style: StyleClass.productName),
+                  SizedBox(
+                    height: constraints.maxHeight,
+                    width: constraints.maxWidth / 2,
+                    child: ClipRRect(
+                      borderRadius: BorderRadiusGeometry.circular(20),
+                      child: Image.network(
+                        products
+                            .firstWhere((item) => item.category == category)
+                            .image,
+                        // width: MediaQuery.of(context).size.width/2.5,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : Row(
+                mainAxisAlignment: .spaceBetween,
+                children: [
+                  SizedBox(
+                    height: constraints.maxHeight,
+                    width: constraints.maxWidth / 2,
+                    child: ClipRRect(
+                      borderRadius: BorderRadiusGeometry.circular(20),
+                      child: Image.network(
+                        products
+                            .firstWhere((item) => item.category == category)
+                            .image,
+                        fit: BoxFit.cover,
+                      ),
+
+                      // width: MediaQuery.of(context).size.width/2.5,
+                    ),
+                  ),
+
+                  Text(category.name, style: StyleClass.productName),
+                  SizedBox(width: constraints.maxWidth / 50),
+                ],
+              ),
       ),
     );
   }
