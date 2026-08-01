@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_review/Constant/colors_class.dart';
 import 'package:project_review/Constant/style_class.dart';
 import 'package:project_review/models/product_model.dart';
-import 'package:project_review/models/product_provider.dart';
+import 'package:project_review/provider/fav_provider.dart';
 import 'package:provider/provider.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -15,6 +15,11 @@ class CategoryCard extends StatelessWidget {
     
     double height=MediaQuery.of(context).size.height;
     double width=MediaQuery.of(context).size.width;
+    final products = context.watch<FavProvider>().products;
+    final hasMatchingProduct = products.any((product) => product.category == category);
+    final String imageUrl = hasMatchingProduct
+        ? products.firstWhere((product) => product.category == category).image
+        : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff';
     return LayoutBuilder(
       builder: (context, constraints) => 
        Container(
@@ -39,10 +44,11 @@ class CategoryCard extends StatelessWidget {
               width: constraints.maxWidth/2,
               child: ClipRRect(
                 borderRadius: BorderRadiusGeometry.circular(20),
-                child: Image.network(context.watch<ProductProvider>().products.firstWhere((product)=>product.category==category).image,
+                child: Image.network(imageUrl,
                 // width: MediaQuery.of(context).size.width/2.5,
                 fit: BoxFit.cover,
-                )),
+                )
+                ),
             )
           ],
         )
@@ -57,7 +63,7 @@ class CategoryCard extends StatelessWidget {
               child: ClipRRect(
                 
                 borderRadius: BorderRadiusGeometry.circular(20),
-                child: Image.network(context.watch<ProductProvider>().products.firstWhere((product)=>product.category==category).image,
+                child: Image.network(context.watch<FavProvider>().products.firstWhere((product)=>product.category==category).image,
                 // width: MediaQuery.of(context).size.width/2.5,
                 fit: BoxFit.cover,
                 )),

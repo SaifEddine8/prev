@@ -14,6 +14,7 @@ final String marca;
 final double price;
 final Categories category;
 final bool isFav;
+ int quantity;
  
 ProductModel({
   required this.image,
@@ -21,7 +22,9 @@ ProductModel({
   required this.name,
   required this.price,
   required this.category,
-  this.isFav=false
+  this.isFav=false,
+  this.quantity=1
+
 });
 
 

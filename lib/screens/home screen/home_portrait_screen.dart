@@ -3,10 +3,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:project_review/Constant/colors_class.dart';
 import 'package:project_review/Constant/style_class.dart';
+import 'package:project_review/db/product_db.dart';
 import 'package:project_review/models/product_model.dart';
-import 'package:project_review/models/product_provider.dart';
-import 'package:project_review/search%20screen/search_portrait_screen.dart';
-import 'package:project_review/search%20screen/search_screen.dart';
+import 'package:project_review/provider/fav_provider.dart';
+import 'package:project_review/screens/search%20screen/search_portrait_screen.dart';
+import 'package:project_review/screens/search%20screen/search_screen.dart';
 import 'package:project_review/widgets/card_product.dart';
 import 'package:project_review/widgets/category_card.dart';
 import 'package:project_review/widgets/home_screen_view.dart';
@@ -127,13 +128,18 @@ class _HomePortraitScreenState extends State<HomePortraitScreen> {
                     Text('See All',style: TextStyle(color: ColorsClass.primaryColor),)
                                   ],
                                 ),
+
+                                
                                 GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,crossAxisSpacing: 10,mainAxisSpacing: 10,mainAxisExtent: 250),
-            itemCount:context.watch<ProductProvider>().products.length ,
+            itemCount:products.length ,
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
                     itemBuilder: (context,index){
-                      final product=context.watch<ProductProvider>().products[index];
-                      return CardProduct(index: index,onTap: ()=>context.read<ProductProvider>().toggleFav(product),);}
+                      ;
+                      return CardProduct(index: index,
+                      product: products[index]
+                      );
+                      }
                     )
                   ],
                 ),
